@@ -56,7 +56,8 @@ body{background:var(--b);color:var(--t);min-height:100vh}
 .pg2{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:20px}
 .pc{background:var(--c);border:1px solid var(--bd);border-radius:14px;overflow:hidden;transition:0.3s;cursor:pointer}
 .pc:hover{border-color:var(--g);transform:translateY(-3px);box-shadow:0 10px 35px rgba(217,169,40,0.12)}
-.pi{width:100%;height:180px;background:var(--c2);display:flex;align-items:center;justify-content:center;font-size:52px;position:relative;overflow:hidden}
+.pi{width:100%;height:auto;min-height:0;background:var(--c2);display:flex;align-items:center;justify-content:center;font-size:52px;position:relative;overflow:hidden}
+.pi img{display:block;width:100%;height:auto;max-width:100%;object-fit:contain}
 .pb{position:absolute;top:10px;left:10px;background:var(--g);color:#000;padding:4px 10px;border-radius:20px;font-size:11px;font-weight:700}
 .pn{padding:16px}
 .pn h3{font-size:15px;font-weight:600;margin-bottom:6px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
@@ -67,7 +68,16 @@ body{background:var(--b);color:var(--t);min-height:100vh}
 .qb:hover{border-color:var(--g);color:var(--g)}
 .qv{font-weight:600;min-width:24px;text-align:center;font-size:15px}
 .pd{display:grid;grid-template-columns:1fr 1fr;gap:40px;padding:35px 24px;max-width:1100px;margin:0 auto}
-.pdi{background:var(--c);border-radius:16px;border:1px solid var(--bd);height:420px;display:flex;align-items:center;justify-content:center;font-size:100px;position:relative;overflow:hidden}
+.pdi{background:var(--c);border-radius:16px;border:1px solid var(--bd);min-height:420px;height:auto;display:block;font-size:100px;position:relative;overflow:hidden}
+.pdgallery{width:100%;overflow:hidden;position:relative}
+.pdtrack{display:flex;width:100%;transition:transform .28s ease;touch-action:pan-y}
+.pdslide{flex:0 0 100%;width:100%;display:flex;align-items:center;justify-content:center;background:var(--c2)}
+.pdslide img{display:block;width:100%;height:auto;max-width:100%;max-height:70vh;object-fit:contain}
+.pdnav{position:absolute;left:0;right:0;top:50%;transform:translateY(-50%);display:flex;justify-content:space-between;pointer-events:none;padding:0 10px}
+.pdnav button{pointer-events:auto;width:40px;height:40px;border-radius:50%;border:1px solid var(--bd);background:rgba(5,5,5,.75);color:var(--t);font-size:22px;cursor:pointer}
+.pddots{display:flex;justify-content:center;gap:7px;padding:10px 0}
+.pddot{width:7px;height:7px;border-radius:50%;background:var(--bd);border:0;padding:0;cursor:pointer}
+.pddot.on{background:var(--g)}
 .pdt h1{font-size:28px;font-weight:700;margin-bottom:12px}
 .pdt .pp2{font-size:32px;font-weight:700;color:var(--g);margin-bottom:12px}
 .pdt .pr2{color:var(--g);font-size:16px;margin-bottom:20px}
@@ -115,7 +125,8 @@ body{background:var(--b);color:var(--t);min-height:100vh}
 .tl2.on{color:var(--g);font-weight:600}
 .sh{background:linear-gradient(135deg,rgba(217,169,40,0.15) 0%,rgba(5,5,5,0) 60%);padding:50px 24px;text-align:center}
 .sg{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:20px;max-width:1100px;margin:0 auto;padding:35px 24px}
-.sc{background:var(--c);border:1px solid var(--bd);border-radius:16px;padding:28px;text-align:center;transition:0.3s}
+.sc{background:var(--c);border:1px solid var(--bd);border-radius:16px;padding:28px;text-align:center;transition:0.3s;overflow:hidden}
+.sc img{display:block;width:100%;height:auto;max-width:100%;object-fit:contain}
 .sc:hover{border-color:var(--g);transform:translateY(-3px);box-shadow:0 10px 35px rgba(217,169,40,0.12)}
 .si{font-size:48px;margin-bottom:16px}
 .sc h3{font-size:20px;font-weight:700;margin-bottom:10px}
@@ -682,7 +693,7 @@ body{overflow-x:hidden}
 <div class="fs"><h4>Gen-Z Mobiles</h4><p style="color:var(--t2);font-size:13px;line-height:1.7;margin-top:10px">Premium mobile accessories and expert repair services. Quality you can trust.</p></div>
 <div class="fs"><h4>Quick Links</h4><a onclick="showPage('home')">Home</a><a onclick="showPage('shop')">Shop</a><a onclick="showPage('services')">Services</a><a onclick="showPage('tracking')">Track Order</a></div>
 <div class="fs"><h4>Categories</h4><a onclick="filterCat('audio')">Audio</a><a onclick="filterCat('power')">Power Banks</a><a onclick="filterCat('chargers')">Chargers</a><a onclick="filterCat('speakers')">Speakers</a><a onclick="filterCat('car')">Car Accessories</a></div>
-<div class="fs"><h4>Contact</h4><a>📍 Chennai, Tamil Nadu</a><a>📞 +91 98765 43210</a><a>✉️ support@genzmobiles.com</a></div>
+<div class="fs"><h4>Contact</h4><a>📍 Chennai, Tamil Nadu</a><a>📞 +91 8838260612</a><a>✉️ mohamedwasim622@gmail.com</a></div>
 </div>
 <div class="fb"><p>© 2026 Gen-Z Mobiles. All rights reserved. Crafted with 💛 in India.</p></div>
 </footer>
@@ -1143,20 +1154,20 @@ function getImgHtml(src, size='normal', alt='') {
   const isImg = src && (src.startsWith('http') || src.startsWith('/') || src.startsWith('.'));
   if (!isImg) return `<div style="font-size:${size==='large'?'120px':size==='small'?'36px':'52px'}">${src}</div>`;
   if (size === 'large') return `<img src="${src}" style="max-width:90%;max-height:90%;object-fit:contain;" alt="${alt}">`;
-  if (size === 'small') return `<img src="${src}" style="width:100%;height:100%;object-fit:cover;border-radius:8px;" alt="${alt}">`;
-  if (size === 'cat') return `<img src="${src}" style="width:70px;height:70px;object-fit:cover;border-radius:12px;margin-bottom:12px;" alt="${alt}">`;
-  if (size === 'svc') return `<img src="${src}" style="width:80px;height:80px;object-fit:cover;border-radius:12px;margin-bottom:16px;" alt="${alt}">`;
-  return `<img src="${src}" style="width:100%;height:100%;object-fit:cover;" alt="${alt}">`;
+  if (size === 'small') return `<img src="${src}" style="width:100%;height:auto;max-width:100%;object-fit:contain;border-radius:8px;" alt="${alt}">`;
+  if (size === 'cat') return `<img src="${src}" style="width:100%;height:auto;max-width:100%;object-fit:contain;border-radius:12px;margin-bottom:12px;" alt="${alt}">`;
+  if (size === 'svc') return `<img src="${src}" style="width:100%;height:auto;max-width:100%;object-fit:contain;border-radius:12px;margin-bottom:16px;" alt="${alt}">`;
+  return `<img src="${src}" style="width:100%;height:auto;max-width:100%;object-fit:contain;" alt="${alt}">`;
 }
 
 function renderHomeCats(){
 document.getElementById('homeCategories').innerHTML=cats.map(c=>{
   return `<div class="cc" onclick="filterCat('${c.id}')">
-    <div style="margin:-28px -28px 16px -28px;height:170px;overflow:hidden;border-radius:14px 14px 0 0;background:var(--c2);position:relative;">
-      <div style="position:absolute;top:0;left:0;right:0;bottom:0;display:flex;align-items:center;justify-content:center;font-size:64px;color:var(--g);z-index:0;">${c.icon}</div>
-      <img src="${c.img}" style="width:100%;height:100%;object-fit:cover;position:relative;z-index:1;" alt="${c.name}" onerror="this.style.display='none'">
+    <div style="margin:-28px -28px 16px -28px;overflow:hidden;border-radius:14px 14px 0 0;background:var(--c2);position:relative;">
+      <div style="display:flex;align-items:center;justify-content:center;font-size:64px;color:var(--g);min-height:90px;">${c.icon}</div>
+      <img src="${c.img}" style="display:block;width:100%;height:auto;max-width:100%;object-fit:contain;position:relative;z-index:1;" alt="${c.name}" onerror="this.style.display='none'">
     </div>
-    <h3>${c.name}</h3><p>${c.desc}</p><div class="cn">${c.count} Products</div>
+    <h3>${c.name}</h3><p>${c.desc}</p>
   </div>`;
 }).join('');
 }
@@ -1176,15 +1187,14 @@ document.getElementById('featuredProducts').innerHTML=f.map(p=>rPC(p)).join('');
 }
 
 function rPC(p){
-const stock=productStock(p);
-return `<div class="pc" onclick="showPD(${p.id})" style="${p.active===false?'opacity:.55':''}"><div class="pi" style="background:var(--c2);">${p.bg?`<span class="pb">${p.bg}</span>`:''}${getImgHtml(p.im, 'normal', p.name)}</div><div class="pn"><h3>${p.name}</h3><div class="pp">₹${p.price}</div><div class="pr">${'★'.repeat(Math.floor(p.r))}${'☆'.repeat(5-Math.floor(p.r))} (${p.rv})</div><div style="font-size:12px;color:var(--t2);margin-top:5px">${p.active===false?'Unavailable':stock>0?stock+' in stock':'Out of stock'}</div></div></div>`;
+return `<div class="pc" onclick="showPD(${p.id})" style="${p.active===false?'opacity:.55':''}"><div class="pi" style="background:var(--c2);">${p.bg?`<span class="pb">${p.bg}</span>`:''}${getImgHtml(p.im, 'normal', p.name)}</div><div class="pn"><h3>${p.name}</h3><div class="pp">₹${p.price}</div></div></div>`;
 }
 
 function renderShop(){
 let h='';
 cats.forEach(c=>{
 const cp=prods.filter(p=>p.cat===c.id);
-h+=`<div style="margin-bottom:50px"><div class="sh2"><h2 class="st">${c.icon} ${c.name} <span class="g">Collection</span></h2></div><div class="pg2">${cp.map(p=>rPC(p)).join('')}</div></div>`;
+h+=`<div style="margin-bottom:50px"><div class="sh2"><h2 class="st">${c.name} <span class="g">Collection</span></h2></div><div class="pg2">${cp.map(p=>rPC(p)).join('')}</div></div>`;
 });
 document.getElementById('shopCategories').innerHTML=h;
 }
@@ -1203,13 +1213,32 @@ return item?item.qty:0;
 }
 
 function showPD(id){
-currentDetailId=id;
-const p=prods.find(x=>x.id===id);if(!p)return;
-const rh=revs.map(r=>`<div class="rc"><div class="rh"><span class="rn">${r.n}</span><span class="rd">${r.dt}</span></div><div class="rr">${'★'.repeat(r.r)}${'☆'.repeat(5-r.r)}</div><div class="rt">${r.t}</div></div>`).join('');
-const cartQty=getCartQty(id);
-const img2Html = p.im2 ? `<div style="margin-top:16px;border-radius:14px;overflow:hidden;border:1px solid var(--bd);height:200px;display:flex;align-items:center;justify-content:center;background:var(--c2);"><img src="${p.im2}" style="width:100%;height:100%;object-fit:cover;" alt="${p.name} - view 2" onerror="this.style.display='none';this.parentElement.innerHTML='<div style=font-size:64px>📷</div>'"></div>` : '';
-document.getElementById('productDetail').innerHTML=`<div class="pdi">${p.bg?`<span class="pb" style="top:20px;left:20px;font-size:13px;padding:6px 14px">${p.bg}</span>`:''}${getImgHtml(p.im, 'large', p.name)}${img2Html}</div><div class="pdt"><h1>${p.name}</h1><div class="pp2">₹${p.price}</div><div class="pr2">${'★'.repeat(Math.floor(p.r))}${'☆'.repeat(5-Math.floor(p.r))} ${p.r} · ${p.rv} Reviews</div><div class="des">${p.d}</div><div class="da"><div class="qc"><button class="qb" onclick="detailQtyChange(${p.id},-1)">−</button><span class="qv" id="detailQty">${cartQty}</span><button class="qb" onclick="detailQtyChange(${p.id},1)">+</button></div><button class="bg" id="addCartBtn" onclick="detailAddCart(${p.id})">Add to Cart - ₹${p.price}</button></div><div class="rs"><h2>Customer Reviews</h2>${rh}</div></div>`;
-showPage('product');
+  currentDetailId=id;
+  const p=prods.find(x=>x.id===id);if(!p)return;
+  const rh=revs.map(r=>`<div class="rc"><div class="rh"><span class="rn">${r.n}</span><span class="rd">${r.dt}</span></div><div class="rr">${'★'.repeat(r.r)}${'☆'.repeat(5-r.r)}</div><div class="rt">${r.t}</div></div>`).join('');
+  const cartQty=getCartQty(id);
+  const images=[p.im,p.im2].filter((v,i,a)=>v && a.indexOf(v)===i);
+  const slides=images.map((src,i)=>`<div class="pdslide"><img src="${src}" alt="${p.name} - view ${i+1}" onerror="this.style.display='none'"></div>`).join('');
+  const dots=images.length>1?images.map((_,i)=>`<button class="pddot${i===0?' on':''}" onclick="pdGoTo(${i})" aria-label="View image ${i+1}"></button>`).join(''):'';
+  const nav=images.length>1?`<div class="pdnav"><button onclick="pdMove(-1)" aria-label="Previous image">‹</button><button onclick="pdMove(1)" aria-label="Next image">›</button></div>`:'';
+  document.getElementById('productDetail').innerHTML=`<div class="pdi"><div class="pdgallery" id="pdGallery"><div class="pdtrack" id="pdTrack">${slides}</div>${nav}<div class="pddots" id="pdDots">${dots}</div></div></div><div class="pdt"><h1>${p.name}</h1><div class="pp2">₹${p.price}</div><div class="pr2">${'★'.repeat(Math.floor(p.r))}${'☆'.repeat(5-Math.floor(p.r))} ${p.r} · ${p.rv} Reviews</div><div class="des">${p.d}</div><div class="da"><div class="qc"><button class="qb" onclick="detailQtyChange(${p.id},-1)">−</button><span class="qv" id="detailQty">${cartQty}</span><button class="qb" onclick="detailQtyChange(${p.id},1)">+</button></div><button class="bg" id="addCartBtn" onclick="detailAddCart(${p.id})">Add to Cart - ₹${p.price}</button></div><div class="rs"><h2>Customer Reviews</h2>${rh}</div></div>`;
+  window.pdIndex=0; window.pdCount=images.length;
+  initPdSwipe();
+  showPage('product');
+}
+function pdGoTo(index){
+  const count=window.pdCount||0;if(!count)return;
+  window.pdIndex=(index+count)%count;
+  const track=document.getElementById('pdTrack');
+  if(track)track.style.transform=`translateX(-${window.pdIndex*100}%)`;
+  document.querySelectorAll('#pdDots .pddot').forEach((d,i)=>d.classList.toggle('on',i===window.pdIndex));
+}
+function pdMove(delta){pdGoTo((window.pdIndex||0)+delta);}
+function initPdSwipe(){
+  const g=document.getElementById('pdGallery');if(!g)return;
+  let sx=0,sy=0;
+  g.ontouchstart=e=>{const t=e.touches[0];sx=t.clientX;sy=t.clientY;};
+  g.ontouchend=e=>{const t=e.changedTouches[0];const dx=t.clientX-sx,dy=t.clientY-sy;if(Math.abs(dx)>45&&Math.abs(dx)>Math.abs(dy))pdMove(dx<0?1:-1);};
 }
 
 function detailQtyChange(id,delta){
