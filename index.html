@@ -996,11 +996,11 @@ let currentDetailId=null;
 let pageStack=['home'];
 let navigatingBack=false;
 const cats=[
-  {id:'audio',name:'Audio',icon:'🎧',img:'cat-audio.png',desc:'Sound experience',count:4},
-  {id:'power',name:'Power Banks',icon:'🔋',img:'cat-power.png',desc:'Stay charged',count:4},
-  {id:'chargers',name:'Chargers',icon:'⚡',img:'cat-chargers.png',desc:'Fast charging',count:4},
-  {id:'speakers',name:'Speakers',icon:'🔊',img:'cat-speakers.png',desc:'Premium sound',count:4},
-  {id:'car',name:'Car Accessories',icon:'🚗',img:'cat-car.png',desc:'Drive smarter',count:4}
+  {id:'audio',name:'Audio',icon:'🎧',img:'https://jquuqldfievmhdjbuizo.supabase.co/storage/v1/object/public/Product%20images/cat-audio.png',desc:'Sound experience',count:4},
+  {id:'power',name:'Power Banks',icon:'🔋',img:'https://jquuqldfievmhdjbuizo.supabase.co/storage/v1/object/public/Product%20images/cat-power.png',desc:'Stay charged',count:4},
+  {id:'chargers',name:'Chargers',icon:'⚡',img:'https://jquuqldfievmhdjbuizo.supabase.co/storage/v1/object/public/Product%20images/cat-chargers.png',desc:'Fast charging',count:4},
+  {id:'speakers',name:'Speakers',icon:'🔊',img:'https://jquuqldfievmhdjbuizo.supabase.co/storage/v1/object/public/Product%20images/cat-speakers.png',desc:'Premium sound',count:4},
+  {id:'car',name:'Car Accessories',icon:'🚗',img:'https://jquuqldfievmhdjbuizo.supabase.co/storage/v1/object/public/Product%20images/cat-car.png',desc:'Drive smarter',count:4}
 ];
 const prods=[
 {id:17,cat:'audio',name:'OnePlus Earbuds',price:2999,r:4.8,rv:312,bg:'Bestseller',im:'prod-17.jpg',im2:'prod-17b.jpg',d:'OnePlus true wireless earbuds with a clean, compact design and immersive everyday sound.'},
@@ -1025,18 +1025,35 @@ const prods=[
 {id:32,cat:'car',name:'Universal Car Phone Holder',price:2499,r:4.6,rv:78,bg:'HD',im:'prod-32.jpg',im2:'prod-32b.jpg',d:'Compact adjustable car phone holder with a strong grip and easy installation.'}
 ];
 const svcs=[
-  {id:1,name:'Screen Replacement',icon:'📱',img:'./images/svc-1.jpg',price:1500,d:'Original quality display replacement with warranty. All models supported.'},
-  {id:2,name:'Battery Replacement',icon:'🔋',img:'./images/svc-2.jpg',price:800,d:'High-capacity battery replacement. 6-month warranty on all batteries.'},
-  {id:3,name:'Water Damage Repair',icon:'💧',img:'./images/svc-3.jpg',price:2000,d:'Professional water damage treatment. Ultrasonic cleaning. Component level repair.'},
-  {id:4,name:'Camera Repair',icon:'📷',img:'./images/svc-4.jpg',price:1200,d:'Front and rear camera repair. Lens replacement. Focus calibration.'},
-  {id:5,name:'Software Issues',icon:'💻',img:'./images/svc-5.jpg',price:500,d:'OS installation, virus removal, data recovery, and optimization.'},
-  {id:6,name:'Charging Port Fix',icon:'🔌',img:'./images/svc-6.jpg',price:600,d:'Charging port cleaning and replacement. Loose connection fix.'}
+  {id:1,name:'Screen Replacement',icon:'📱',img:'https://jquuqldfievmhdjbuizo.supabase.co/storage/v1/object/public/Product%20images/svc-1.jpg',price:1500,d:'Original quality display replacement with warranty. All models supported.'},
+  {id:2,name:'Battery Replacement',icon:'🔋',img:'https://jquuqldfievmhdjbuizo.supabase.co/storage/v1/object/public/Product%20images/svc-2.jpg',price:800,d:'High-capacity battery replacement. 6-month warranty on all batteries.'},
+  {id:3,name:'Water Damage Repair',icon:'💧',img:'https://jquuqldfievmhdjbuizo.supabase.co/storage/v1/object/public/Product%20images/svc-3.jpg',price:2000,d:'Professional water damage treatment. Ultrasonic cleaning. Component level repair.'},
+  {id:4,name:'Camera Repair',icon:'📷',img:'https://jquuqldfievmhdjbuizo.supabase.co/storage/v1/object/public/Product%20images/svc-4.jpg',price:1200,d:'Front and rear camera repair. Lens replacement. Focus calibration.'},
+  {id:5,name:'Software Issues',icon:'💻',img:'https://jquuqldfievmhdjbuizo.supabase.co/storage/v1/object/public/Product%20images/svc-5.jpg',price:500,d:'OS installation, virus removal, data recovery, and optimization.'},
+  {id:6,name:'Charging Port Fix',icon:'🔌',img:'https://jquuqldfievmhdjbuizo.supabase.co/storage/v1/object/public/Product%20images/svc-6.jpg',price:600,d:'Charging port cleaning and replacement. Loose connection fix.'}
 ];
 const revs=[{n:'Rahul Kumar',r:5,dt:'2 days ago',t:'Excellent quality! The case fits perfectly and feels premium. Worth every rupee.'},{n:'Priya Sharma',r:5,dt:'1 week ago',t:'Fast delivery and great packaging. The tempered glass was easy to install with no bubbles.'},{n:'Arun M.',r:4,dt:'2 weeks ago',t:'Good product. Charging speed is impressive. Build quality could be slightly better.'},{n:'Divya R.',r:5,dt:'3 weeks ago',t:'Amazing service! My phone screen was replaced in just 2 hours. Highly recommended!'}];
 let cart=JSON.parse(localStorage.getItem('genzmobiles_cart'))||[];
 let orders=JSON.parse(localStorage.getItem('genzmobiles_orders'))||[];
 let bookings=JSON.parse(localStorage.getItem('genzmobiles_bookings'))||[];
 let curPay='card',curSvc=null;
+
+async function syncCloudCategories(){
+  if(!navigator.onLine)return;
+  try{
+    const {data,error}=await supabaseClient.from('Categories').select('*').order('id');
+    if(error)throw error;
+    if(Array.isArray(data)&&data.length){
+      const map={};
+      data.forEach(r=>{if(r.Name)map[String(r.Name).toLowerCase()] = r.Image || '';});
+      document.querySelectorAll('[data-category-name]').forEach(el=>{
+        const key=String(el.getAttribute('data-category-name')||'').toLowerCase();
+        const img=map[key];
+        if(img)el.src=img;
+      });
+    }
+  }catch(e){console.warn('Categories cloud sync unavailable:',e);}
+}
 
 function init(){
 renderHomeCats();
@@ -1057,6 +1074,7 @@ document.getElementById('bookingDate').min=tdy;
     setTimeout(syncCloudOrders,1300);
     setTimeout(syncCloudBookings,1700);
     setTimeout(syncCloudProducts,2100);
+    setTimeout(syncCloudCategories,2300);
     setTimeout(syncCustomerData,2500);
   }
   updateProfileUI();
