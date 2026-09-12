@@ -449,7 +449,6 @@ body{overflow-x:hidden}
 <div class="cs" id="cartSummary" style="display:none">
 <div class="sr"><span>Subtotal</span><span id="subtotal">₹0</span></div>
 <div class="sr"><span>Shipping</span><span style="color:var(--g)">FREE</span></div>
-<div class="sr"><span>Tax (5%)</span><span id="tax">₹0</span></div>
 <div class="sr t"><span>Total</span><span id="total">₹0</span></div>
 <button class="bg" style="width:100%;margin-top:20px" onclick="showPage('checkout')">Proceed to Checkout →</button>
 </div>
@@ -1164,7 +1163,6 @@ function renderHomeCats(){
 document.getElementById('homeCategories').innerHTML=cats.map(c=>{
   return `<div class="cc" onclick="filterCat('${c.id}')">
     <div style="margin:-28px -28px 16px -28px;overflow:hidden;border-radius:14px 14px 0 0;background:var(--c2);position:relative;">
-      <div style="display:flex;align-items:center;justify-content:center;font-size:64px;color:var(--g);min-height:90px;">${c.icon}</div>
       <img src="${c.img}" style="display:block;width:100%;height:auto;max-width:100%;object-fit:contain;position:relative;z-index:1;" alt="${c.name}" onerror="this.style.display='none'">
     </div>
     <h3>${c.name}</h3><p>${c.desc}</p>
@@ -1295,10 +1293,8 @@ const ci=document.getElementById('cartItems'),cs=document.getElementById('cartSu
   //
 cs.style.display='block';ec.style.display='none';let st=0;
 ci.innerHTML=cart.map(i=>{st+=i.price*i.qty;return `<div class="ci2"><div class="cim">${getImgHtml(i.im, 'small', i.name)}</div><div class="cd"><h3>${i.name}</h3><p style="color:var(--t2);font-size:13px">${cats.find(c=>c.id===i.cat)?.name||''}</p></div><div class="qc"><button class="qb" onclick="upCQ(${i.id},-1)">−</button><span class="qv">${i.qty}</span><button class="qb" onclick="upCQ(${i.id},1)">+</button></div><div class="cp2">₹${i.price*i.qty}</div><button class="cr" onclick="remCart(${i.id})">🗑️</button></div>`;}).join('');
-const tx=Math.round(st*0.05);
 document.getElementById('subtotal').textContent='₹'+st;
-document.getElementById('tax').textContent='₹'+tx;
-document.getElementById('total').textContent='₹'+(st+tx);
+document.getElementById('total').textContent='₹'+st;
 }
 
 function upCQ(id,d){
