@@ -1204,6 +1204,110 @@ body{overflow-x:hidden}
     display:none !important;
   }
 }
+
+
+/* ===== FINAL HOME CATEGORY CARDS ===== */
+@media (max-width:900px){
+  #page-home .ref-category-section .ref-card{
+    position:relative !important;
+    overflow:hidden !important;
+  }
+  #page-home .ref-category-section .ref-card-image{
+    position:absolute !important;
+    inset:0 !important;
+    width:100% !important;
+    height:100% !important;
+    flex:none !important;
+    z-index:1 !important;
+  }
+  #page-home .ref-category-section .ref-card-image img{
+    width:100% !important;
+    height:100% !important;
+    max-width:none !important;
+    max-height:none !important;
+    object-fit:cover !important;
+    object-position:center !important;
+  }
+  #page-home .ref-category-section .ref-card-bottom{
+    position:absolute !important;
+    inset:0 !important;
+    z-index:2 !important;
+    padding:0 !important;
+    pointer-events:none !important;
+    background:transparent !important;
+  }
+  #page-home .ref-category-section .ref-card-bottom h3,
+  #page-home .ref-category-section .ref-card-bottom p{
+    display:none !important;
+  }
+  #page-home .ref-category-section .ref-arrow{
+    z-index:3 !important;
+    pointer-events:auto !important;
+  }
+  #page-home .ref-category-section .ref-card-row{
+    overflow-x:auto !important;
+  }
+
+  /* Category heading slightly smaller, without changing card dimensions */
+  #page-home .ref-category-section .ref-title-wrap h2{
+    font-size:28px !important;
+  }
+}
+
+/* ===== FINAL HOME BOTTOM FEATURES ===== */
+@media (max-width:900px){
+  #page-home .ref-benefits.ref-benefits-three{
+    height:100px !important;
+    min-height:100px !important;
+    display:grid !important;
+    grid-template-columns:repeat(3,minmax(0,1fr)) !important;
+    width:100% !important;
+    padding:0 !important;
+    gap:0 !important;
+    overflow:hidden !important;
+    align-items:center !important;
+  }
+  #page-home .ref-benefits-three .ref-benefit{
+    height:62px !important;
+    min-width:0 !important;
+    width:auto !important;
+    padding:0 12px !important;
+    gap:0 !important;
+    justify-content:center !important;
+    border-right:1px solid #515151 !important;
+    border-bottom:0 !important;
+    box-sizing:border-box !important;
+  }
+  #page-home .ref-benefits-three .ref-benefit:last-child{
+    border-right:0 !important;
+  }
+  #page-home .ref-benefits-three .benefit-ico{
+    display:none !important;
+  }
+  #page-home .ref-benefits-three .ref-benefit > div{
+    min-width:0 !important;
+    width:100% !important;
+    text-align:center !important;
+  }
+  #page-home .ref-benefits-three .ref-benefit strong{
+    display:block !important;
+    font-size:13px !important;
+    line-height:1.15 !important;
+    margin:0 0 6px !important;
+    white-space:nowrap !important;
+  }
+  #page-home .ref-benefits-three .ref-benefit small{
+    display:block !important;
+    font-size:10.5px !important;
+    line-height:1.15 !important;
+    white-space:nowrap !important;
+  }
+}
+
+/* ===== FINAL PROFILE PLACEHOLDER ===== */
+#profileAvatar{
+  font-size:34px !important;
+}
 </style>
 <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 </head>
@@ -1263,7 +1367,7 @@ body{overflow-x:hidden}
   <section class="ref-section ref-category-section">
     <div class="ref-section-head">
       <div class="ref-title-wrap"><span class="ref-section-icon ref-grid-icon"><i></i><i></i><i></i><i></i></span><h2>Shop by Category</h2></div>
-      <a class="ref-view-all" onclick="showPage('shop')">View All <span>›</span></a>
+      <a class="ref-view-all" onclick="renderShop();showPage('shop')">View All <span>›</span></a>
     </div>
     <div class="ref-card-row" id="homeCategories"></div>
   </section>
@@ -1466,7 +1570,7 @@ body{overflow-x:hidden}
 <div id="page-profile" class="pg">
 <div class="pfc">
 <div class="pf">
-<div class="pa" id="profileAvatar">GU</div>
+<div class="pa" id="profileAvatar">👤</div>
 <div class="pn2" id="profileName">Guest User</div>
 <div class="pe" id="profileEmail">Not signed in</div>
 <div class="ps">
@@ -2030,10 +2134,9 @@ function getImgHtml(src, size='normal', alt='') {
 }
 
 function renderHomeCats(){
-  const homeDesc={audio:'Headphones,\nEarbuds & More',power:'Stay Powered\nAlways',chargers:'Fast & Safe\nCharging',speakers:'Loud & Clear\nSound'};
-  document.getElementById('homeCategories').innerHTML=cats.slice(0,4).map(c=>`<div class="ref-card" onclick="filterCat('${c.id}')">
+  document.getElementById('homeCategories').innerHTML=cats.map(c=>`<div class="ref-card" onclick="filterCat('${c.id}')">
     <div class="ref-card-image"><img src="${c.img}" alt="${c.name}" onerror="this.style.display='none'"></div>
-    <div class="ref-card-bottom"><h3>${c.name}</h3><p>${homeDesc[c.id]||c.desc}</p><span class="ref-arrow">›</span></div>
+    <div class="ref-card-bottom"><span class="ref-arrow">›</span></div>
   </div>`).join('');
 }
 
@@ -2055,21 +2158,26 @@ function rPC(p){
 return `<div class="pc" onclick="showPD(${p.id})" style="${p.active===false?'opacity:.55':''}"><div class="pi" style="background:var(--c2);">${p.bg?`<span class="pb">${p.bg}</span>`:''}${getImgHtml(p.im, 'normal', p.name)}</div><div class="pn"><h3>${p.name}</h3><div class="pp">₹${p.price}</div></div></div>`;
 }
 
-function renderShop(){
-let h='';
-cats.forEach(c=>{
-const cp=prods.filter(p=>p.cat===c.id);
-h+=`<div style="margin-bottom:50px"><div class="sh2"><h2 class="st">${c.name} <span class="g">Collection</span></h2></div><div class="pg2">${cp.map(p=>rPC(p)).join('')}</div></div>`;
-});
-document.getElementById('shopCategories').innerHTML=h;
+function renderShop(categoryId=null){
+  let h='';
+  if(categoryId){
+    const c=cats.find(x=>x.id===categoryId);
+    if(c){
+      const cp=prods.filter(p=>p.cat===categoryId);
+      h+=`<div style="margin-bottom:50px"><div class="sh2"><h2 class="st">${c.name} <span class="g">Collection</span></h2></div><div class="pg2">${cp.map(p=>rPC(p)).join('')}</div></div>`;
+    }
+  }else{
+    cats.forEach(c=>{
+      const cp=prods.filter(p=>p.cat===c.id);
+      h+=`<div style="margin-bottom:50px"><div class="sh2"><h2 class="st">${c.name} <span class="g">Collection</span></h2></div><div class="pg2">${cp.map(p=>rPC(p)).join('')}</div></div>`;
+    });
+  }
+  document.getElementById('shopCategories').innerHTML=h;
 }
 
 function filterCat(cid){
-showPage('shop');
-setTimeout(()=>{
-const els=document.getElementById('shopCategories').querySelectorAll('.sh2');
-for(let i=0;i<cats.length;i++){if(cats[i].id===cid){els[i].scrollIntoView({behavior:'smooth',block:'start'});break;}
-}},100);
+  showPage('shop');
+  setTimeout(()=>renderShop(cid),0);
 }
 
 function getCartQty(id){
@@ -2495,7 +2603,7 @@ async function updateProfileUI(){
   const nm=document.getElementById('profileName'), em=document.getElementById('profileEmail'), av=document.getElementById('profileAvatar'), ac=document.getElementById('profileAccountAction');
   if(nm)nm.textContent=firstName||'Your Name';
   if(em)em.textContent=email?'Account':'Not signed in';
-  if(av)av.textContent=(firstName||'GU').slice(0,2).toUpperCase();
+  if(av)av.textContent=firstName ? firstName.slice(0,2).toUpperCase() : '👤';
   if(ac)ac.textContent=email?'Account / Logout':'Login / Account'; const lo=document.getElementById('customerLogoutBtn'); if(lo)lo.style.display=email?'block':'none';
   const nameInput=document.getElementById('customerFirstName');
   if(nameInput)nameInput.value=firstName;
@@ -2670,6 +2778,97 @@ async function startRazorpayPayment(orderPayload){
 
 init();
 </script>
+
+
+<style>
+/* ===== SHOP BY CATEGORY — SHOW THE FULL ORIGINAL IMAGE =====
+   Keep the complete category artwork visible inside each card.
+   Do not crop/zoom the image, so any text/headings embedded in the
+   category artwork remains readable. */
+#page-home .ref-category-section .ref-card{
+  overflow:hidden !important;
+}
+
+#page-home .ref-category-section .ref-card-image{
+  position:relative !important;
+  inset:auto !important;
+  width:100% !important;
+  height:258px !important;
+  flex:0 0 258px !important;
+  background:#090a0a !important;
+  display:flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+  overflow:hidden !important;
+}
+
+#page-home .ref-category-section .ref-card-image img{
+  display:block !important;
+  width:100% !important;
+  height:100% !important;
+  max-width:100% !important;
+  max-height:100% !important;
+  object-fit:contain !important;
+  object-position:center !important;
+}
+
+#page-home .ref-category-section .ref-card-bottom{
+  position:relative !important;
+  inset:auto !important;
+  z-index:2 !important;
+  flex:1 !important;
+  padding:13px 17px 14px !important;
+  background:#0a0b0b !important;
+  pointer-events:auto !important;
+}
+
+#page-home .ref-category-section .ref-card-bottom h3,
+#page-home .ref-category-section .ref-card-bottom p{
+  display:block !important;
+}
+
+/* Mobile: preserve the existing 153 × 259 category card size,
+   while fitting the whole artwork inside its image area. */
+@media (max-width:900px){
+  #page-home .ref-category-section .ref-card{
+    position:relative !important;
+    overflow:hidden !important;
+    flex:0 0 153px !important;
+    width:153px !important;
+    height:259px !important;
+  }
+
+  #page-home .ref-category-section .ref-card-image{
+    position:relative !important;
+    inset:auto !important;
+    width:153px !important;
+    height:175px !important;
+    flex:0 0 175px !important;
+  }
+
+  #page-home .ref-category-section .ref-card-image img{
+    width:100% !important;
+    height:100% !important;
+    max-width:100% !important;
+    max-height:100% !important;
+    object-fit:contain !important;
+    object-position:center !important;
+  }
+
+  #page-home .ref-category-section .ref-card-bottom{
+    position:relative !important;
+    inset:auto !important;
+    padding:9px 10px 10px !important;
+    flex:1 !important;
+    background:#0a0b0b !important;
+  }
+
+  #page-home .ref-category-section .ref-card-bottom h3,
+  #page-home .ref-category-section .ref-card-bottom p{
+    display:block !important;
+  }
+}
+</style>
 
 </body>
 </html>
